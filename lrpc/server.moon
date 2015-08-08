@@ -20,7 +20,8 @@ class
 
     dealwith: (data, peer) =>
         parser = data\gmatch "%S+"
-        command = @registered[parser!]
+        commandname = parser!
+        command = @registered[commandname]
         local resp
 
         if command
@@ -28,6 +29,6 @@ class
             status, resp = pcall -> command unpack params
             resp = "ERR: #{resp}" unless status
         else
-            resp = "ERR: unknown command"
+            resp = "ERR: unknown command #{commandname}"
 
         pcall -> @udp\sendto "#{resp}\n", peer.host, peer.port
