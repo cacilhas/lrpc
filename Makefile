@@ -1,8 +1,9 @@
 LUAJIT= luajit
+SHARE_DIR := $(shell $(LUAJIT) find_lua_path.lua)
 LUA := LUA_PATH="./?.lua;./?/init.lua;$$LUA_PATH" $(LUAJIT)
 CC= moonc
 MD= mkdir -p
-DEST= /usr/local/share/lua/jit/lrpc
+DEST= $(SHARE_DIR)/lrpc
 INSTALL= cp -rf
 RM= rm -rf
 
