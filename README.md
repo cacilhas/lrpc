@@ -10,6 +10,9 @@ LRPC requires [LuaSocket](http://w3.impa.br/~diego/software/luasocket/). Be
 careful when compiling it, remember to use LuaJIT headers and libs instead of
 traditional Lua.
 
+Indeed, in the current release, LRPC shall work over traditional Lua, but I’ve
+not tested it.
+
 
 ## Installing
 
@@ -39,6 +42,11 @@ end)
 server.serve()
 ```
 
+The `Server` constructor accepts two parameters:
+
+* The first is the IP to listen, default `"*"`;
+* The second is the port, default `54000`.
+
 
 ### The client
 
@@ -50,6 +58,12 @@ local client = Client "localhost"
 
 print(client.send("add", "2", "3"))
 ```
+
+The `Client` constructor accepts three parameters:
+
+* The first is the host to connect, no default value;
+* The second is the port, default `54000`;
+* The third is the timeout in seconds, default no timeout.
 
 
 ## Author
