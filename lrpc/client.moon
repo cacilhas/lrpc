@@ -17,4 +17,7 @@ class
         data = table.concat params, " "
         @udp\sendto "#{data}\n", @server, @port
         response = @udp\receivefrom!
-        response\gsub "(.-)%s*$", "%1"
+        response = response\gsub "(.-)%s*$", "%1"
+
+        raise response if response\match "^ERR: "
+        response
