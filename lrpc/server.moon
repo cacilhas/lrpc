@@ -13,7 +13,6 @@ class
     serve: =>
         @udp = socket.udp!
         @udp\setsockname @host, @port
-        @udp\setoption "reuseaddr", true
 
         while true
             data, host, port = @udp\receivefrom!

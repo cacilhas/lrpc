@@ -3,14 +3,12 @@ socket = assert require "socket"
 
 --------------------------------------------------------------------------------
 class
-    new: (server, port=54000, timeout) =>
+    new: (server, port=54000) =>
         error "no server" unless server
         @server = socket.dns.toip server
         @server = @server or server
         @port = port
-        timeout = nil if (type timeout) == "number" and timeout <= 0
         @udp = socket.udp!
-        @udp\settimeout timeout if timeout
 
     send: (command, ...) =>
         params = {command, ...}

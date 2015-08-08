@@ -59,11 +59,10 @@ local client = Client "localhost"
 print(client.send("add", "2", "3"))
 ```
 
-The `Client` constructor accepts three parameters:
+The `Client` constructor accepts two parameters:
 
 * The first is the host to connect, no default value;
-* The second is the port, default `54000`;
-* The third is the timeout in seconds, default no timeout.
+* The second is the port, default `54000`.
 
 
 ## Author
