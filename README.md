@@ -47,6 +47,9 @@ The `Server` constructor accepts two parameters:
 * The first is the IP to listen, default `"*"`;
 * The second is the port, default `54000`.
 
+Note: use `coroutine.yield` on callback’s loops to release server for handling
+other connections.
+
 
 ### The client
 
