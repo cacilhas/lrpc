@@ -30,16 +30,13 @@ sudo make install
 ### The server
 
 ```
-#!lua
+#!moonscript
 
-local Server = assert(require "lrpc.server")
-local server = Server()
+Server = assert require "lrpc.server"
+server = Server!
 
-server.register("add", function(a, b)
-  return 0 + a + b
-end)
-
-server.serve()
+server.register "add", (a, b) -> 0 + a + b
+server.serve!
 ```
 
 The `Server` constructor accepts two parameters:
@@ -54,12 +51,12 @@ other connections.
 ### The client
 
 ```
-#!lua
+#!moonscript
 
-local Client = assert(require "lrpc.client")
-local client = Client "localhost"
+Client = assert require "lrpc.client"
+client = Client "localhost"
 
-print(client.send("add", "2", "3"))
+print client.send "add", "2", "3"
 ```
 
 The `Client` constructor accepts two parameters:
