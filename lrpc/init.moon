@@ -5,4 +5,4 @@ _LICENSE = "BSD-3 Clausule"
 
 
 --------------------------------------------------------------------------------
-{:_VERSION, :_DESCRIPTION, :_AUTHOR, :_LICENSE}
+:_VERSION, :_DESCRIPTION, :_AUTHOR, :_LICENSE
