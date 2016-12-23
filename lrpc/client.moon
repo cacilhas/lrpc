@@ -20,5 +20,8 @@ class
         response = @udp\receive!
         error "timeout", 2 unless response
 
-        error (response\sub 6), 2 if response\match "^ERR: "
-        unpack (loadstring response)!
+        if response\match "^ERR: "
+            response = ((response\sub 6)\gsub "^%s+", "")\gsub "%s+$", ""
+            error response, 2
+        else
+            unpack (loadstring response)!

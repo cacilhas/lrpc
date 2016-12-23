@@ -55,4 +55,4 @@ class
 
 
     senderror: (err, peer) =>
-        pcall -> @udp\sendto "ERR: #{resp}\n", peer.host, peer.port
+        pcall -> @udp\sendto "ERR: #{err}\n", peer.host, peer.port

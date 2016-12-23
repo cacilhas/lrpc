@@ -15,11 +15,29 @@ libc = ffi.load "libc"
 Server = assert require "lrpc.server"
 
 server = Server!
-server\register "add", (...) ->
+
+
+--------------------------------------------------------------------------------
+
+server\register "sum", (...) ->
     s = 0
-    coroutine.yield!
-    s += e for _, e in ipairs {...}
-    s
+    c = #{...}
+    for _, param in ipairs {...}
+        coroutine.yield!
+        s += param
+    s, c
+
+
+server\register "fact", (n) ->
+    f = 1
+    while n > 0
+        coroutine.yield!
+        f *= n
+        n -= 1
+    f
+
+
+--------------------------------------------------------------------------------
 
 pid = libc.fork!
 
