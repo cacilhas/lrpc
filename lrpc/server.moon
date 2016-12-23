@@ -9,10 +9,11 @@ class
     new: (host="*", port=54000) =>
         @host, @port = host, port
         @coros = {}
-        @registered = {}
+        @callbacks = {}
 
     register: (name, obj) =>
-        @registered[name] = obj
+        io.stderr\write "deprecated method register, use @callbacks table"
+        @callbacks[name] = obj
 
     serve: =>
         @udp = socket.udp!
@@ -39,7 +40,7 @@ class
 
         data = parser!
         commandname = data[1]
-        command = @registered[commandname]
+        command = @callbacks[commandname]
         return @\senderror "unknown command #{commandname}", peer unless command
 
         params = [param for param in *data[2, ]]
