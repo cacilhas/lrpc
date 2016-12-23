@@ -1,12 +1,13 @@
 local *
 
 socket = assert require "socket"
+ser = assert require "ser"
 
 
 --------------------------------------------------------------------------------
 class
     new: (server, port=54000, timeout=3) =>
-        error "no server" unless server
+        error "no server", 2 unless server
         @server = socket.dns.toip server
         @server = @server or server
         @port = port
@@ -14,11 +15,10 @@ class
         @udp\settimeout timeout
 
     send: (command, ...) =>
-        params = {command, ...}
-        data = table.concat params, " "
+        data = ser {command, ...}
         @udp\sendto "#{data}\n", @server, @port
         response = @udp\receive!
-        response = response\gsub "(.-)%s*$", "%1"
+        error "timeout", 2 unless response
 
-        raise response if response\match "^ERR: "
-        response
+        error (response\sub 6), 2 if response\match "^ERR: "
+        unpack (loadstring response)!
