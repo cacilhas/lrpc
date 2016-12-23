@@ -1,3 +1,5 @@
+local *
+
 socket = assert require "socket"
 
 
