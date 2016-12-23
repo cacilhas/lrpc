@@ -23,7 +23,7 @@ class
             data, host, port = @udp\receivefrom!
 
             if data and #data > 0
-                coro = coroutine.create -> @\dealwith data, {:host, :port}
+                coro = coroutine.create -> @\dealwith data, :host, :port
                 @coros["#{host}:#{port}"] = coro
 
             for name, coro in pairs @coros
@@ -51,7 +51,7 @@ class
 
 
     respond: (resp, peer) =>
-        status, err = pcall -> @udp\sendto "#{ser resp}\n", peer.host, peer.port
+        pcall -> @udp\sendto "#{ser resp}\n", peer.host, peer.port
 
 
     senderror: (err, peer) =>

@@ -30,7 +30,7 @@ TestRPC =
 
     testUnregistered: =>
         expected = ": unknown command unknown"
-        unit.assertErrorMsgContains expected, client.send, client, "unknown", "data"
+        unit.assertErrorMsgContains expected, client\send, "unknown", "data"
 
 
 --------------------------------------------------------------------------------
