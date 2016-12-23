@@ -5,11 +5,32 @@ ser = assert require "ser"
 
 
 --------------------------------------------------------------------------------
+callbacksMT =
+    __newindex: (k, v) =>
+        local pass
+
+        switch type v
+            when "function"
+                pass = true
+
+            when "table"
+                mt = getmetatable v
+                pass = true if type mt.__call == "function"
+
+            else
+                pass = false
+
+        assert pass, "expected function, got #{type v}"
+
+        rawset @, k, v
+
+
+--------------------------------------------------------------------------------
 class
     new: (host="*", port=54000) =>
         @host, @port = host, port
         @coros = {}
-        @callbacks = {}
+        @callbacks = setmetatable {}, callbacksMT
 
     register: (name, obj) =>
         io.stderr\write "deprecated method register, use @callbacks table"

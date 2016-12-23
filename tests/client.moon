@@ -4,6 +4,7 @@ local *
 
 unit = assert require "luaunit"
 Client = assert require "lrpc.client"
+Server = assert require "lrpc.server"
 
 
 --------------------------------------------------------------------------------
@@ -31,6 +32,14 @@ TestRPC =
     testUnregistered: =>
         expected = ": unknown command unknown"
         unit.assertErrorMsgContains expected, client\send, "unknown", "data"
+
+    testExpectFunction: =>
+        server = Server "localhost", 54001
+        expected = ": expected function, got string"
+        unit.assertErrorMsgContains expected, -> server.callbacks.some = "some"
+
+        server.callbacks.a = -> nil
+        server.callbacks.b = setmetatable {}, __call: () => nil
 
 
 --------------------------------------------------------------------------------
