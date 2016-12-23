@@ -19,7 +19,7 @@ server = Server!
 
 --------------------------------------------------------------------------------
 
-server\register "sum", (...) ->
+server.callbacks.sum = (...) ->
     s = 0
     c = #{...}
     for _, param in ipairs {...}
@@ -28,7 +28,7 @@ server\register "sum", (...) ->
     s, c
 
 
-server\register "fact", (n) ->
+server.callbacks.fact = (n) ->
     f = 1
     while n > 0
         coroutine.yield!

@@ -4,13 +4,22 @@ socket = assert require "socket"
 ser = assert require "ser"
 
 
+remoteMT =
+    __index: (command) =>
+        (...) -> @client\send command, ...
+
+    __newindex: (k, v) =>
+        error "cannot set remote attributes"
+
+
 --------------------------------------------------------------------------------
 class
     new: (server, port=54000, timeout=3) =>
-        error "no server", 2 unless server
+        error "no server supplied", 2 unless server
         @server = socket.dns.toip server
         @server = @server or server
         @port = port
+        @remote = setmetatable {client: @}, remoteMT
         @udp = socket.udp!
         @udp\settimeout timeout
 
