@@ -1,4 +1,7 @@
+local *
+
 socket = assert require "socket"
+ser = assert require "ser"
 
 
 --------------------------------------------------------------------------------
@@ -31,16 +34,25 @@ class
 
 
     dealwith: (data, peer) =>
-        parser = data\gmatch "%S+"
-        commandname = parser!
+        parser, err = loadstring data
+        return @\senderror err, peer unless parser
+
+        data = parser!
+        commandname = data[1]
         command = @registered[commandname]
-        local resp
+        return @\senderror "unknown command #{commandname}", peer unless command
 
-        if command
-            params = [param for param in parser]
-            status, resp = pcall -> command unpack params
-            resp = "ERR: #{resp}" unless status
-        else
-            resp = "ERR: unknown command #{commandname}"
+        params = [param for param in *data[2, ]]
+        resp = {pcall -> command unpack params}
+        return @\senderror resp[2] unless resp[1]
 
-        pcall -> @udp\sendto "#{resp}\n", peer.host, peer.port
+        -- Everything went alright
+        @\respond [e for e in *resp[2, ]], peer
+
+
+    respond: (resp, peer) =>
+        status, err = pcall -> @udp\sendto "#{ser resp}\n", peer.host, peer.port
+
+
+    senderror: (err, peer) =>
+        pcall -> @udp\sendto "ERR: #{err}\n", peer.host, peer.port

@@ -1,6 +1,7 @@
 LUAJIT= luajit
 SHARE_DIR := $(shell $(LUAJIT) find_lua_path.lua)
-LUA := LUA_PATH="./?.lua;./?/init.lua;$$LUA_PATH" $(LUAJIT)
+LUAPATH := LUA_PATH="./?.lua;./?/init.lua;$$LUA_PATH"
+MOON= moon
 CC= moonc
 MD= mkdir -p
 DEST= $(SHARE_DIR)/lrpc
@@ -8,9 +9,7 @@ INSTALL= cp -rf
 RM= rm -rf
 
 SRC= $(wildcard lrpc/*.moon)
-TEST_SRC= $(wildcard tests/*.moon)
 TARGET= $(SRC:.moon=.lua)
-TESTS= $(TEST_SRC:.moon=.lua)
 
 #-------------------------------------------------------------------------------
 all: $(TARGET)
@@ -36,12 +35,15 @@ uninstall:
 
 .PHONY: clean
 clean:
-	$(RM) $(TARGET) $(TESTS)
+	$(RM) $(TARGET)
 
 
 .PHONY: test
-test: $(TARGET) $(TESTS)
-	$(LUA) tests/server.lua &
+test: $(TARGET) server.pid
+	$(LUAPATH) $(MOON) tests/client.moon
+	@kill `cat server.pid` && $(RM) server.pid
+
+
+server.pid: $(TARGET)
+	$(LUAPATH) $(MOON) tests/server.moon
 	@sleep .1
-	$(LUA) tests/client.lua
-	@killall $(LUAJIT)
