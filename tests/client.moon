@@ -1,3 +1,5 @@
+local *
+
 Client = assert require "lrpc.client"
 
 client = Client "localhost"

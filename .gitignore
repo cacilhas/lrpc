@@ -5,6 +5,7 @@
 *.lua
 *.lc
 *.love
+*.pid
 *.swo
 *.swp
 *.txz
