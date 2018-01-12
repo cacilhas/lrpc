@@ -35,8 +35,8 @@ sudo make install
 Server = assert require "lrpc.server"
 server = Server!
 
-server.register "add", (a, b) -> 0 + a + b
-server.serve!
+server\register "add", (a, b) -> 0 + a + b
+server\serve!
 ```
 
 The `Server` constructor accepts two parameters:
@@ -56,7 +56,7 @@ other connections.
 Client = assert require "lrpc.client"
 client = Client "localhost"
 
-print client.send "add", "2", "3"
+print client\send "add", "2", "3"
 ```
 
 The `Client` constructor accepts two parameters:
